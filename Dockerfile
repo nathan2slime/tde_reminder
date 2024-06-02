@@ -28,4 +28,4 @@ USER nodejs
 COPY --from=installer --chown=nodejs:nodejs /app .
 
 WORKDIR /app
-CMD yarn migrate:deploy && yarn seed:run && yarn start
+CMD yarn migrate:deploy && yarn start

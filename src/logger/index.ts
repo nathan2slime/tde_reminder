@@ -1,6 +1,6 @@
 import pino from 'pino';
 
 export const logger = pino({
-  name: '@cpa/api',
+  name: '@reminder/api',
   timestamp: true,
 });

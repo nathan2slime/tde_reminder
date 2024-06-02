@@ -1,23 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsEmail, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsDate,
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
+import { Type } from 'class-transformer';
 
-export class CreateDoctorScheduleDto {
-  @ApiProperty()
-  @IsDate()
-  start: Date;
-
-  @ApiProperty()
-  @IsDate()
-  end: Date;
-}
-
-export class ShowDoctorDto {
+export class ShowClientDto {
   @IsUUID()
   @ApiProperty()
   id: string;
 }
 
-export class UpdateDoctorDto {
+export class UpdateClientDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsOptional()
@@ -31,17 +29,23 @@ export class UpdateDoctorDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsOptional()
-  crm: string;
+  cpf: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsOptional()
-  specialty: string;
+  address: string;
 
   @ApiProperty()
   @IsNotEmpty()
   @IsOptional()
   phone: string;
+
+  @ApiProperty()
+  @IsDate()
+  @IsOptional()
+  @Type(() => Date)
+  date_birth: Date;
 
   @ApiProperty()
   @IsEmail()
@@ -49,7 +53,7 @@ export class UpdateDoctorDto {
   email: string;
 }
 
-export class CreateDoctorDto {
+export class CreateClientDto {
   @ApiProperty()
   @IsNotEmpty()
   name: string;
@@ -60,20 +64,23 @@ export class CreateDoctorDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  crm: string;
+  @MinLength(11)
+  cpf: string;
 
   @ApiProperty()
   @IsNotEmpty()
-  specialty: string;
+  address: string;
 
   @ApiProperty()
   @IsNotEmpty()
   phone: string;
 
   @ApiProperty()
+  @IsDate()
+  @Type(() => Date)
+  date_birth: Date;
+
+  @ApiProperty()
   @IsEmail()
   email: string;
-
-  @ApiProperty({ type: [CreateDoctorScheduleDto] })
-  schedules: CreateDoctorScheduleDto[];
 }

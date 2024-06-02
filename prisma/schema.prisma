@@ -7,14 +7,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model MedicalAppointment {
+model Appointment {
   id String @id @default(uuid())
 
   user Client @relation(fields: [user_id], references: [id])
 
   description String
-  schedule    DoctorSchedule @relation(fields: [doctor_schedule_id], references: [id])
-  doctor      Doctor         @relation(fields: [doctor_id], references: [id])
+  schedule    Schedule  @relation(fields: [doctor_schedule_id], references: [id])
+  doctor      Doctor    @relation(fields: [doctor_id], references: [id])
   deleted_at  DateTime?
 
   updated_at         DateTime @updatedAt()
@@ -24,12 +24,12 @@ model MedicalAppointment {
   user_id            String
 }
 
-model DoctorSchedule {
+model Schedule {
   id String @id @default(uuid())
 
   start        DateTime
   end          DateTime
-  appointments MedicalAppointment[]
+  appointments Appointment[]
 
   doctor     Doctor?   @relation(fields: [doctor_id], references: [id])
   doctor_id  String?
@@ -48,8 +48,8 @@ model Doctor {
   crm       String  @unique
   phone     String?
 
-  schedules   DoctorSchedule[]
-  appoinments MedicalAppointment[]
+  schedules    Schedule[]
+  appointments Appointment[]
 }
 
 model Client {
@@ -67,5 +67,5 @@ model Client {
   updated_at DateTime @updatedAt()
   created_at DateTime @default(now())
 
-  appointments MedicalAppointment[]
+  appointments Appointment[]
 }

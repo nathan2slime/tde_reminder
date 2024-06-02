@@ -11,20 +11,20 @@ import {
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { CreateDoctorDto, UpdateDoctorDto } from '~/doctor/doctor.dto';
-import { PaginationDto } from '~/types';
 import { logger } from '~/logger';
-import { DoctorService } from '~/doctor/doctor.service';
+import { PaginationDto } from '~/types';
+import { ClientService } from '~/client/client.service';
+import { CreateClientDto, UpdateClientDto } from '~/client/client.dto';
 
-@Controller('doctor')
-@ApiTags('Doctor')
-export class DoctorController {
-  constructor(private readonly doctorService: DoctorService) {}
+@Controller('client')
+@ApiTags('Client')
+export class ClientController {
+  constructor(private readonly clientService: ClientService) {}
 
   @Post('create')
-  async create(@Res() res: Response, @Body() payload: CreateDoctorDto) {
+  async create(@Res() res: Response, @Body() payload: CreateClientDto) {
     try {
-      const data = await this.doctorService.create(payload);
+      const data = await this.clientService.create(payload);
 
       return res.status(HttpStatus.CREATED).json(data);
     } catch (error) {
@@ -36,7 +36,7 @@ export class DoctorController {
   @Post('paginate')
   async paginate(@Res() res: Response, @Body() payload: PaginationDto) {
     try {
-      const data = await this.doctorService.paginate(payload);
+      const data = await this.clientService.paginate(payload);
 
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
@@ -49,7 +49,7 @@ export class DoctorController {
   @ApiParam({ type: 'string', name: 'id' })
   async remove(@Res() res: Response, @Param('id') id: string) {
     try {
-      await this.doctorService.remove(id);
+      await this.clientService.remove(id);
 
       return res.status(HttpStatus.OK).send();
     } catch (error) {
@@ -62,23 +62,11 @@ export class DoctorController {
   @ApiParam({ type: 'string', name: 'id' })
   async update(
     @Res() res: Response,
-    @Body() payload: UpdateDoctorDto,
+    @Body() payload: UpdateClientDto,
     @Param('id') id: string,
   ) {
     try {
-      const data = await this.doctorService.update(payload, id);
-
-      return res.status(HttpStatus.OK).json(data);
-    } catch (error) {
-      logger.error(error);
-      return res.status(HttpStatus.BAD_REQUEST).json(error.message);
-    }
-  }
-
-  @Get('schedule/:id')
-  async schedule(@Res() res: Response, @Param('id') id: string) {
-    try {
-      const data = await this.doctorService.schedule({ id });
+      const data = await this.clientService.update(payload, id);
 
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {
@@ -90,7 +78,7 @@ export class DoctorController {
   @Get('show/:id')
   async show(@Res() res: Response, @Param('id') id: string) {
     try {
-      const data = await this.doctorService.show({ id });
+      const data = await this.clientService.show({ id });
 
       return res.status(HttpStatus.OK).json(data);
     } catch (error) {

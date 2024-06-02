@@ -1,5 +1,5 @@
 import { NestFactory } from '@nestjs/core';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 
 import { AppModule } from './app.module';
@@ -10,12 +10,14 @@ import 'reflect-metadata';
 
 (async () => {
   const PORT = process.env.PORT;
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
     }),
   );
+
+  app.enableCors();
 
   const config = new DocumentBuilder()
     .setTitle('Reminder')
